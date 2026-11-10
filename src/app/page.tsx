@@ -1,3 +1,5 @@
+import { ContactForm } from '@/components/ContactForm';
+import { ContactPlayground } from '@/components/ContactPlayground';
 import Script from 'next/script';
 import { portfolio as p } from '@/content/portfolio';
 import { WorkGallery } from '@/components/WorkGallery';
@@ -72,35 +74,20 @@ export default function Home() {
             {p.services.map(service => <ServiceCard key={service.number} service={service} />)}
           </div>
         </section>
-        <section id="contact" className={s.contact} aria-labelledby="contact-title">
-          <div className={s.contactTop}><span>{p.name}</span><span>{p.role}</span></div>
-          <h2 id="contact-title" data-reveal>{p.contact.heading.replace('\n', ' ')}</h2>
-          <p className={s.contactText}>{p.contact.text}</p>
-          <button type="button" className={s.contactAction} data-open-dialog="contact-dialog">Get in touch &#8599;</button>
-          <footer className={s.footer}>
-            <span>&copy; {new Date().getFullYear()} {p.name}</span>
-            <nav aria-label="Footer navigation">
-              <a href="#work">Work</a><a href="#about">About</a><a href="#services">Services</a>
-              {socialLinks.map(link => <a key={link.label} href={link.url}>{link.label} &#8599;</a>)}
-            </nav>
-            <a href="#home">Back to top &#8593;</a>
-          </footer>
+        <section id="contact" className={s.contact} aria-label="Contact">
+          <ContactPlayground />
         </section>
       </main>
-      <button className={s.contactPill} type="button" data-open-dialog="contact-dialog" aria-haspopup="dialog">
+      <button className={s.contactPill} type="button" data-floating-contact data-open-dialog="contact-dialog" aria-haspopup="dialog">
         <span className={s.avatar} aria-hidden="true"><Media media={p.bio.portrait} /></span>
         <span className={s.rollingLabel}><span>Contact</span><span aria-hidden="true">Let's talk</span></span>
         <span aria-hidden="true">&#8599;</span>
       </button>
       <dialog id="contact-dialog" className={s.dialog} aria-labelledby="contact-dialog-title">
         <button type="button" className={s.closeDialog} data-close-dialog aria-label="Close contact panel">&times;</button>
-        <span className={s.smallHeading}>Have something in mind?</span>
-        <h2 id="contact-dialog-title">Get in <i>touch.</i></h2>
-        <p>{p.contact.text}</p>
-        <ul className={s.tags}>{p.services.map(service => <li key={service.number}>{service.title}</li>)}</ul>
-        {p.contact.email
-          ? <a className={s.contactAction} href={`mailto:${p.contact.email}`}>Email {p.name} &#8599;</a>
-          : <div className={s.emailPending}><strong>Email enquiries coming soon.</strong><p>My contact details will be available here shortly.</p></div>}
+        <h2 id="contact-dialog-title">Get in touch.</h2>
+        <ContactForm />
+        {socialLinks.length > 0 && <nav className={s.tags} aria-label="Social links">{socialLinks.map(link => <a key={link.label} href={link.url}>{link.label} &#8599;</a>)}</nav>}
       </dialog>
       <Script src="/portfolio-interactions.js" strategy="afterInteractive" />
     </>

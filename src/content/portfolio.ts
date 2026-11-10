@@ -24,5 +24,17 @@ export const portfolio = {
     { number: '02', title: 'Short video', description: 'Short-form videos shaped around a clear idea, a strong opening and the platform they’re made for.', tags: ['Reels', 'TikTok', 'Shorts'], tone: 'pink', media: { src: '/images/video-study.svg', alt: 'Sample vertical video title card', placeholder: true } },
     { number: '03', title: 'SEO & Copywriting', description: 'Search-informed copy that helps people find you and quickly understand what you offer.', tags: ['Website copy', 'On-page SEO', 'Content writing'], tone: 'cream', media: { src: '/images/copy-study.svg', alt: 'Sample editorial copy layout', placeholder: true } },
   ] satisfies Service[],
-  contact: { email: '', instagram: '', linkedin: '', tiktok: '', websiteUrl: '', heading: 'Let’s make\nsomething good.', text: 'Have an idea in mind? Let’s give it the words, visuals and attention it deserves.' },
+  contact: { email: 'ferngriffith3@gmail.com', instagram: '', linkedin: '', tiktok: '', websiteUrl: '', heading: 'Let’s make\nsomething good.', text: 'Have an idea in mind? Let’s give it the words, visuals and attention it deserves.' },
 };
+
+export const contactPieces = [
+  { label: 'Say hello', tone: 'cream', icon: '' },
+  { label: 'Reach out', tone: 'sage', icon: '' },
+  { label: 'Open contact details', tone: 'gradient', icon: 'message' },
+  { label: 'Let’s chat', tone: 'gingham', icon: '' },
+  { label: 'Send a message', tone: 'pink', icon: '' },
+  { label: 'Email enquiries', tone: 'cream', icon: 'mail' },
+] as const;
+
+
+export const contactTopics = ['Short-Form Video', 'Content Strategy', 'Paid & Organic Social'] as const;

@@ -9,11 +9,16 @@ const image = (media, eager = false) => media.videoSrc
 const tags = items => `<ul class="tags">${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
 const closeButton = label => `<button type="button" class="closeDialog" data-close-dialog aria-label="${label}">&times;</button>`;
 
+const contactIcons = {
+  mail: '<svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="m5 9 11 9 11-9"/></svg>',
+  message: '<svg aria-hidden="true" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M28 15a12 10 0 0 1-12 10H6l2-5a9 9 0 0 1-4-7C4 7 9 4 16 4s12 5 12 11Z"/></svg>',
+};
+
 export async function renderPreview(root) {
   const contentPath = path.join(root, 'src/content/portfolio.ts');
   const contentUrl = pathToFileURL(contentPath);
   contentUrl.searchParams.set('version', String(fs.statSync(contentPath).mtimeMs));
-  const { portfolio: p } = await import(contentUrl.href);
+  const { portfolio: p, contactPieces, contactTopics } = await import(contentUrl.href);
   const styles = ['src/app/globals.css', 'src/app/page.module.css'].map(file => fs.readFileSync(path.join(root, file), 'utf8')).join('\n');
   const projectDialogs = p.projects.map(project => `
     <dialog id="project-${project.id}" class="dialog" aria-labelledby="title-${project.id}">
@@ -84,23 +89,35 @@ export async function renderPreview(root) {
       </article>`).join('')}
     </div>
   </section>
-  <section id="contact" class="contact" aria-labelledby="contact-title">
-    <div class="contactTop"><span>${escapeHtml(p.name)}</span><span>${escapeHtml(p.role)}</span></div>
-    <h2 id="contact-title" data-reveal>${escapeHtml(p.contact.heading.replace('\n', ' '))}</h2>
-    <p class="contactText">${escapeHtml(p.contact.text)}</p>
-    <button type="button" class="contactAction" data-open-dialog="contact-dialog">Get in touch &#8599;</button>
-    <footer class="footer"><span>&copy; ${new Date().getFullYear()} ${escapeHtml(p.name)}</span><nav aria-label="Footer navigation"><a href="#work">Work</a><a href="#about">About</a><a href="#services">Services</a>${socialLinks}</nav><a href="#home">Back to top &#8593;</a></footer>
+  <section id="contact" class="contact" aria-label="Contact">
+    <div class="contact-playground" data-contact-playground>
+      ${contactPieces.map(({ label, tone, icon }) => `
+        <button type="button" class="contact-piece" data-tone="${tone}" ${icon ? `data-icon="${icon}"` : ''} aria-label="${escapeHtml(label)}" aria-haspopup="dialog" data-open-dialog="contact-dialog">
+          ${icon ? contactIcons[icon] : escapeHtml(label)}
+        </button>`).join('')}
+    </div>
   </section>
 </main>
-<button class="contactPill" type="button" data-open-dialog="contact-dialog" aria-haspopup="dialog">
+<button class="contactPill" type="button" data-floating-contact data-open-dialog="contact-dialog" aria-haspopup="dialog">
   <span class="avatar" aria-hidden="true">${image(p.bio.portrait)}</span>
   <span class="rollingLabel"><span>Contact</span><span aria-hidden="true">Let's talk</span></span><span aria-hidden="true">&#8599;</span>
 </button>
 <dialog id="contact-dialog" class="dialog" aria-labelledby="contact-dialog-title">
   ${closeButton('Close contact panel')}
-  <span class="smallHeading">Have something in mind?</span><h2 id="contact-dialog-title">Get in <i>touch.</i></h2>
-  <p>${escapeHtml(p.contact.text)}</p>${tags(p.services.map(service => service.title))}
-  ${p.contact.email ? `<a class="contactAction" href="mailto:${escapeHtml(p.contact.email)}">Email ${escapeHtml(p.name)} &#8599;</a>` : '<div class="emailPending"><strong>Email enquiries coming soon.</strong><p>My contact details will be available here shortly.</p></div>'}
+  <h2 id="contact-dialog-title">Get in touch.</h2>
+  <form class="contact-form" data-contact-form data-recipient="${escapeHtml(p.contact.email)}">
+    <div class="contact-form-grid">
+      <label class="contact-field"><span>Full name</span><input name="name" autocomplete="name" placeholder="${escapeHtml(p.name)}" maxlength="120" required></label>
+      <label class="contact-field"><span>Email</span><input name="email" type="email" autocomplete="email" placeholder="${escapeHtml(p.contact.email)}" maxlength="254" required></label>
+      <label class="contact-field contact-project"><span>Project details</span><textarea name="details" placeholder="Tell me your goals" rows="4" maxlength="1500" required></textarea></label>
+      <fieldset class="contact-field contact-topics">
+        <legend>What can I do for you?</legend>
+        <div class="contact-topic-list">${contactTopics.map(topic => `<label class="contact-topic"><input type="checkbox" name="topic" value="${escapeHtml(topic)}"><span>${escapeHtml(topic)}</span></label>`).join('')}</div>
+      </fieldset>
+    </div>
+    <div class="contact-submit"><button type="submit"><span aria-hidden="true">&#10148;</span> Submit</button><p>Opens your email app.</p></div>
+  </form>
+  ${socialLinks ? `<nav class="tags" aria-label="Social links">${socialLinks}</nav>` : ''}
 </dialog>
 <script src="/portfolio-interactions.js"></script>
 </body></html>`;
