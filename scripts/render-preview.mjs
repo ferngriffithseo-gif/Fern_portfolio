@@ -79,6 +79,16 @@ export async function renderPreview(root) {
       <div class="factCard" data-spotlight><p><span data-spotlight-title>${escapeHtml(p.services[0].title)}</span><br><i>One creative point of view.</i></p><span class="count" data-spotlight-number aria-hidden="true">01</span><a href="#services">Explore my services <span aria-hidden="true">&#8600;</span></a></div>
     </div>
   </section>
+  <div class="portfolio-divider" aria-hidden="true">
+    ${['cream', 'olive'].map(tone => `
+      <div class="portfolio-divider-row" data-tone="${tone}">
+        <div class="portfolio-divider-track" data-moving>
+          ${[0, 1].map(() => `<div class="portfolio-divider-group">
+            ${Array.from({length: 16}, (_, index) => `<span class="portfolio-divider-item">FERN ${index % 2 === 0 ? '<span class="portfolio-divider-star">&#10022;</span>' : '<span class="portfolio-divider-fern"></span>'}</span>`).join('')}
+          </div>`).join('')}
+        </div>
+      </div>`).join('')}
+  </div>
   <section id="services" class="services" aria-labelledby="services-title">
     <h2 id="services-title" class="smallHeading">Services</h2>
     <div class="serviceStack">

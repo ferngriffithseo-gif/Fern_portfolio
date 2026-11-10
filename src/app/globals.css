@@ -292,3 +292,60 @@ html[data-contact-visible] [data-floating-contact]:not(:focus-visible) { visibil
   #contact-dialog-title { margin-bottom: 16px; }
   .contact-field { border-radius: 13px; }
 }
+
+.portfolio-divider {
+  margin-top: clamp(48px, 7vw, 108px);
+  overflow: hidden;
+  border-top: 1px solid var(--olive);
+}
+
+.portfolio-divider-row {
+  overflow: hidden;
+  background: var(--cream);
+  color: var(--olive);
+  font: 500 clamp(25px, 3vw, 48px)/1 var(--serif);
+  letter-spacing: -.035em;
+}
+
+.portfolio-divider-row[data-tone="olive"] {
+  background: var(--olive);
+  color: var(--pink);
+}
+
+.portfolio-divider-track {
+  display: flex;
+  width: max-content;
+  animation: portfolio-divider-scroll 32s linear infinite;
+}
+
+.portfolio-divider-row[data-tone="olive"] .portfolio-divider-track {
+  animation-direction: reverse;
+  animation-delay: -9s;
+}
+
+.portfolio-divider-group {
+  display: flex;
+  flex: none;
+  min-width: 100vw;
+  justify-content: space-around;
+}
+
+.portfolio-divider-item {
+  display: flex;
+  align-items: center;
+  gap: .4em;
+  padding: .37em .4em .4em 0;
+  white-space: nowrap;
+}
+
+.portfolio-divider-star { font-family: var(--sans); font-size: .8em; }
+.portfolio-divider-fern {
+  width: .65em;
+  height: .9em;
+  background: currentColor;
+  mask: url('/images/fern-sprig.svg') center / contain no-repeat;
+}
+
+@keyframes portfolio-divider-scroll {
+  to { transform: translateX(-50%); }
+}

@@ -124,7 +124,7 @@
   cursor: pointer;
 }
 
-.work, .about, .services  {
+.work, .about  {
   margin-top: clamp(90px, 12vw, 175px);
 }
 
@@ -287,6 +287,10 @@
   padding-block: 10px;
 }
 
+.services {
+  margin-top: clamp(38px, 5vw, 72px);
+}
+
 .services > h2  {
   margin-bottom: 26px;
 }
@@ -403,8 +407,8 @@
 }
 
 .contact {
+  margin-top: clamp(48px, 7vw, 108px);
   background: var(--cream);
-  margin-top: clamp(70px, 10vw, 150px);
   padding: clamp(12px, 2vw, 28px);
 }
 

@@ -1,3 +1,4 @@
+import { PortfolioDivider } from '@/components/PortfolioDivider';
 import { ContactForm } from '@/components/ContactForm';
 import { ContactPlayground } from '@/components/ContactPlayground';
 import Script from 'next/script';
@@ -68,6 +69,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <PortfolioDivider />
         <section id="services" className={s.services} aria-labelledby="services-title">
           <h2 id="services-title" className={s.smallHeading}>Services</h2>
           <div className={s.serviceStack}>
